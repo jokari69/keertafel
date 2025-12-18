@@ -90,7 +90,7 @@ struct GameContainerView: View {
                     onExit: onExit
                 )
             } else {
-                GameView(viewModel: gameViewModel)
+                GameView(viewModel: gameViewModel, onAbandon: onExit)
                     .onChange(of: gameViewModel.gameState) { oldValue, newValue in
                         if newValue == .finished {
                             showResults = true

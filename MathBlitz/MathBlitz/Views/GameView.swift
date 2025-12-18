@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GameView: View {
     @ObservedObject var viewModel: GameViewModel
+    var onAbandon: (() -> Void)?
     @State private var confettiCounter = 0
 
     var body: some View {
@@ -43,19 +44,22 @@ struct GameView: View {
 
     // MARK: - Top Bar
     private func topBar(isIPad: Bool) -> some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 12) {
             // Timer
             timerView(isIPad: isIPad)
+                .fixedSize()
 
             Spacer()
 
             // Streak indicator
             if viewModel.currentStreak >= 3 {
                 streakBadge(isIPad: isIPad)
+                    .fixedSize()
             }
 
             // Score
             scoreView(isIPad: isIPad)
+                .fixedSize()
         }
     }
 
@@ -157,6 +161,20 @@ struct GameView: View {
                         )
                         .shadow(color: .green.opacity(0.5), radius: 15)
                 )
+            }
+
+            if let onAbandon = onAbandon {
+                Button(action: onAbandon) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .semibold))
+                        Text("Terug")
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    }
+                    .foregroundColor(.white.opacity(0.7))
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                }
             }
         }
     }
